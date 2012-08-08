@@ -233,7 +233,6 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			String tag = UUID.randomUUID().toString();
 			Result result = registerChunk(actor, here, tag);
 			actor.sendMessage(result.getMessage());
-			actor.sendMessage("ChunkyBlock placed.");
 			bpEvent.setCancelled(!result.isSuccess());
 		}
 	}
@@ -259,7 +258,6 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			Chunk here = bbEvent.getBlock().getChunk();
 			Result result = removeChunk(actor, here);
 			actor.sendMessage(result.getMessage());
-			actor.sendMessage("ChunkyBlock broken.");
 			bbEvent.setCancelled(!result.isSuccess());
 		}
 	}
