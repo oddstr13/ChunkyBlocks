@@ -362,7 +362,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			Result result = registerChunk(player,here,tag);
 			player.sendMessage(result.getMessage());
 		}		
-		if (commandName.equals("removechunk")){
+		else if (commandName.equals("removechunk")){
 			String tag = "";
 			if(args.length > 0){
 				tag = args[0];
@@ -379,7 +379,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			Result result = removeChunk(player, here);
 			player.sendMessage(result.getMessage());
 		}
-		if (commandName.equals("mychunks")){
+		else if (commandName.equals("mychunks")){
 			String page = "";
 			if(args.length > 0){
 				page = args[0];
@@ -409,7 +409,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 				return true;
 			}
 		}
-		if (commandName.equals("listchunks")){
+		else if (commandName.equals("listchunks")){
 			String playerName = "";
 			int page = 0;
 			if(!player.hasPermission("chunkyblocks.adminlist")){
@@ -460,7 +460,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 				return true;
 			}
 		}
-		if (commandName.equals("telechunk")){	
+		else if (commandName.equals("telechunk")){	
 			if(!player.hasPermission("chunkyblocks.adminteleport")){
 				player.sendMessage("You do not have permission to use this command.");
 				return true;
@@ -500,7 +500,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 				}
 			}
 		}
-		if (commandName.equals("removechunkadmin")){
+		else if (commandName.equals("removechunkadmin")){
 			if(!player.hasPermission("chunkyblocks.adminremove")){
 				player.sendMessage("You do not have permission to use this command.");
 				return true;
@@ -522,7 +522,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			Result result = removeChunk(this.getServer().getPlayer(playerName),here);
 			player.sendMessage(result.getMessage());
 		}
-		if (commandName.equals("cbsilence")){
+		else if (commandName.equals("cbsilence")){
 			if (suppressed.contains(player.getName())){
 				suppressed.remove(player.getName());
 				return true;
