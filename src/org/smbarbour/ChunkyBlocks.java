@@ -139,8 +139,8 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 		useBlock = myConfig.getBoolean("useBlock", true);
 		loadRange = myConfig.getInt("radius", 1);
 		blockId = myConfig.getInt("blockType", 19);
-		String damage = myConfig.getString("blockDamage", "*");
-		if (damage == "*") {
+		String damage = myConfig.getString("blockDamage", "'*'");
+		if (damage.equals("*") || damage.equals("'*'")) {
 			blockDamage = 0;
 			useBlockDamage = false;
 		} else {
@@ -233,6 +233,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			String tag = UUID.randomUUID().toString();
 			Result result = registerChunk(actor, here, tag);
 			actor.sendMessage(result.getMessage());
+			actor.sendMessage("ChunkyBlock placed.");
 			bpEvent.setCancelled(result.isSuccess());
 		}
 	}
@@ -258,6 +259,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			Chunk here = bbEvent.getBlock().getChunk();
 			Result result = removeChunk(actor, here);
 			actor.sendMessage(result.getMessage());
+			actor.sendMessage("ChunkyBlock broken.");
 			bbEvent.setCancelled(result.isSuccess());
 		}
 	}
@@ -529,6 +531,18 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			} else {
 				suppressed.add(player.getName());
 			}
+		}
+		else if (commandName.equals("cbreload")) {
+			if(!player.hasPermission("chunkyblocks.reloadconfig")){
+				player.sendMessage("You do not have permission to use this command.");
+				return true;
+			}
+			logMessage(Level.INFO, "Reloading configuration...");
+			player.sendMessage("[" + info.getName() + "]: " +"Reloading configuration...");
+			loadConfig();
+			logMessage(Level.INFO, "Configuration reloaded.");
+			player.sendMessage("[" + info.getName() + "]: " +"Configuration reloaded.");
+			return true;
 		}
 		return false;
 	}

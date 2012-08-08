@@ -34,6 +34,10 @@ commands:
   cbsilence:
     description: Toggle boundary notification messages.
     usage: /<command> - Toggle notification messages.
+  cbreload:
+    description: reload ChunkyBlocks configuration
+    permission: chunkyblocks.reloadconfig
+    usage: /<command> - reload ChunkyBlocks configuration.
 permissions:
   chunkyblocks.user:
     default: op
@@ -48,6 +52,7 @@ permissions:
       chunkyblocks.adminteleport: true
       chunkyblocks.adminremove: true
       chunkyblocks.overridechunklimit: true
+      chunkyblocks.reloadconfig: true
   chunkyblocks.set:
     default: false
   chunkyblocks.remove:
@@ -66,4 +71,5 @@ permissions:
   chunkyblocks.notifyborder:
     description: Display a message when crossing the boundary of a chunk in the chunkloading list.
     default: false
-    
+  chunkyblocks.reloadconfig:
+    default: false
