@@ -5,6 +5,7 @@ range: 1
 
 # Chunkloading block check
 blockType: 19
+blockDamage: '*'
 useBlock: false
 
 # User-specified chunks

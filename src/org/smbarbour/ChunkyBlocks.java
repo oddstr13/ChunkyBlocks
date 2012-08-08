@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.lang.Integer;
 
 import javax.persistence.PersistenceException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -46,10 +46,12 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 	private FileConfiguration myConfig;
 	private boolean debugMessages;
 	private boolean useBlock;
+	private boolean useBlockDamage;
 	private boolean onlyOnlinePlayers;
 	private int loadRange;
 	private int maxChunks;
-	private Material clMaterial;
+	private int blockId;
+	private int blockDamage;
 	private EbeanServer database;
 	private List<String> suppressed = new ArrayList<String>();
 
@@ -136,7 +138,15 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 		debugMessages = myConfig.getBoolean("debug",false);
 		useBlock = myConfig.getBoolean("useBlock", true);
 		loadRange = myConfig.getInt("radius", 1);
-		clMaterial = Material.getMaterial(myConfig.getInt("blockType", 19));
+		blockId = myConfig.getInt("blockType", 19);
+		String damage = myConfig.getString("blockDamage", "*");
+		if (damage == "*") {
+			blockDamage = 0;
+			useBlockDamage = false;
+		} else {
+			blockDamage = Integer.parseInt(damage);
+			useBlockDamage = true;
+		}
 		maxChunks = myConfig.getInt("maxChunksPerUser",1);
 		onlyOnlinePlayers = myConfig.getBoolean("onlyOnlinePlayers",false);
 	}
@@ -204,8 +214,20 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 	@EventHandler(priority=EventPriority.HIGHEST)
 	public final void onBlockPlace(BlockPlaceEvent bpEvent)
 	{
-		if (!bpEvent.isCancelled() && this.useBlock && bpEvent.getBlock().getType().equals(this.clMaterial))
-		{
+		boolean ok = false;
+		if (!bpEvent.isCancelled()) {
+			if (this.useBlock && bpEvent.getBlock().getTypeId() == this.blockId) {
+				if (this.useBlockDamage) {
+					int bpMeta = bpEvent.getBlock().getData();
+					if (bpMeta == this.blockDamage) {
+						ok = true;
+					}
+				} else {
+					ok = true;
+				}
+			}
+		}
+		if (ok) {
 			Player actor = bpEvent.getPlayer();
 			Chunk here = bpEvent.getBlock().getChunk();
 			String tag = UUID.randomUUID().toString();
@@ -218,8 +240,20 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 	@EventHandler(priority=EventPriority.HIGHEST)
 	public final void onBlockBreak(BlockBreakEvent bbEvent)
 	{
-		if (!bbEvent.isCancelled() && this.useBlock && bbEvent.getBlock().getType().equals(this.clMaterial))
-		{
+		boolean ok = false;
+		if (!bbEvent.isCancelled()) {
+			if (this.useBlock && bbEvent.getBlock().getTypeId() == this.blockId) {
+				if (this.useBlockDamage) {
+					int bbMeta = bbEvent.getBlock().getData();
+					if (bbMeta == this.blockDamage) {
+						ok = true;
+					}
+				} else {
+					ok = true;
+				}
+			}
+		}
+		if (ok) {
 			Player actor = bbEvent.getPlayer();
 			Chunk here = bbEvent.getBlock().getChunk();
 			Result result = removeChunk(actor, here);
