@@ -234,7 +234,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			Result result = registerChunk(actor, here, tag);
 			actor.sendMessage(result.getMessage());
 			actor.sendMessage("ChunkyBlock placed.");
-			bpEvent.setCancelled(result.isSuccess());
+			bpEvent.setCancelled(!result.isSuccess());
 		}
 	}
 	
@@ -260,7 +260,7 @@ public class ChunkyBlocks extends JavaPlugin implements Listener {
 			Result result = removeChunk(actor, here);
 			actor.sendMessage(result.getMessage());
 			actor.sendMessage("ChunkyBlock broken.");
-			bbEvent.setCancelled(result.isSuccess());
+			bbEvent.setCancelled(!result.isSuccess());
 		}
 	}
 
